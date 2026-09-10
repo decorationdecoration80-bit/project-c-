@@ -1,1186 +1,166 @@
-<!DOCTYPE html>
-<html lang="en">
+from pathlib import Path
+import shutil, zipfile
+
+project = Path("/mnt/data/Z_ZBAN_فساتين_الافراح")
+project.mkdir(exist_ok=True)
+assets = project / "assets"
+assets.mkdir(exist_ok=True)
+
+# Copy the generated preview/logo-style visual into the project.
+src = Path("/mnt/data/a_wide_dark_themed_elegant_bridal_boutique_websi.png")
+if src.exists():
+    shutil.copy2(src, assets / "preview.png")
+
+html = r'''<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Adham 💻 | Personal Website</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Z زبن - فساتين أفراح وزفاف">
+<title>Z زبن | فساتين الأفراح</title>
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
-body{
-    font-family:Arial,sans-serif;
-    background:#050b14;
-    color:white;
-    overflow-x:hidden;
-}
-
-/* NAVBAR */
-
-nav{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    padding:18px 7%;
-    background:rgba(5,11,20,.9);
-    backdrop-filter:blur(12px);
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    z-index:1000;
-    border-bottom:1px solid rgba(255,255,255,.08);
-}
-
-.logo{
-    font-size:26px;
-    font-weight:bold;
-}
-
-.logo span{
-    color:#00d9ff;
-}
-
-nav ul{
-    display:flex;
-    gap:25px;
-    list-style:none;
-}
-
-nav a{
-    color:white;
-    text-decoration:none;
-    transition:.3s;
-}
-
-nav a:hover{
-    color:#00d9ff;
-}
-
-/* HOME */
-
-.home{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    padding:120px 8%;
-
-    background:
-    linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.88)),
-    url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=80");
-
-    background-size:cover;
-    background-position:center;
-}
-
-.home-content{
-    max-width:850px;
-}
-
-.welcome{
-    color:#00d9ff;
-    font-size:21px;
-    margin-bottom:15px;
-}
-
-.home h1{
-    font-size:85px;
-    margin-bottom:20px;
-}
-
-.home h1 span{
-    color:#00d9ff;
-}
-
-.laptop{
-    display:inline-block;
-    animation:float 2s infinite ease-in-out;
-}
-
-@keyframes float{
-    0%,100%{transform:translateY(0)}
-    50%{transform:translateY(-15px)}
-}
-
-.home p{
-    max-width:700px;
-    font-size:21px;
-    color:#c4d0dc;
-    line-height:1.8;
-}
-
-.buttons{
-    display:flex;
-    gap:15px;
-    margin-top:30px;
-    flex-wrap:wrap;
-}
-
-.btn{
-    display:inline-block;
-    padding:15px 30px;
-    border-radius:30px;
-    background:#00d9ff;
-    color:#001018;
-    text-decoration:none;
-    font-weight:bold;
-    transition:.3s;
-}
-
-.btn:hover{
-    transform:translateY(-6px) scale(1.05);
-    box-shadow:0 10px 35px rgba(0,217,255,.4);
-}
-
-.btn-outline{
-    background:transparent;
-    color:white;
-    border:1px solid #00d9ff;
-}
-
-/* GENERAL */
-
-section{
-    padding:100px 8%;
-}
-
-.title{
-    text-align:center;
-    margin-bottom:55px;
-}
-
-.title h2{
-    font-size:45px;
-    margin-bottom:12px;
-}
-
-.title h2 span{
-    color:#00d9ff;
-}
-
-.title p{
-    color:#8fa3b7;
-    font-size:17px;
-}
-
-/* ABOUT */
-
-.about{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:50px;
-    align-items:center;
-}
-
-.about-image{
-    min-height:430px;
-    border-radius:25px;
-
-    background:
-    linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.5)),
-    url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1000&q=80");
-
-    background-size:cover;
-    background-position:center;
-
-    transition:.5s;
-}
-
-.about-image:hover{
-    transform:scale(1.03);
-}
-
-.about-text h2{
-    font-size:45px;
-    margin-bottom:20px;
-}
-
-.about-text h2 span{
-    color:#00d9ff;
-}
-
-.about-text p{
-    color:#a9b7c5;
-    line-height:1.9;
-    font-size:18px;
-    margin-bottom:18px;
-}
-
-/* STATS */
-
-.stats{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:20px;
-}
-
-.stat{
-    background:#0b1828;
-    padding:35px 20px;
-    text-align:center;
-    border-radius:20px;
-    border:1px solid #182d43;
-    transition:.4s;
-}
-
-.stat:hover{
-    transform:translateY(-10px);
-    border-color:#00d9ff;
-}
-
-.stat h3{
-    color:#00d9ff;
-    font-size:45px;
-}
-
-.stat p{
-    color:#9eb0c1;
-    margin-top:10px;
-}
-
-/* CARDS */
-
-.cards{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:25px;
-}
-
-.card{
-    background:#0b1828;
-    padding:32px;
-    border-radius:22px;
-    border:1px solid #182d43;
-    transition:.4s;
-    position:relative;
-    overflow:hidden;
-}
-
-.card::before{
-    content:"";
-    position:absolute;
-    width:120px;
-    height:120px;
-    background:#00d9ff;
-    filter:blur(80px);
-    opacity:.08;
-    top:-50px;
-    right:-50px;
-}
-
-.card:hover{
-    transform:translateY(-12px);
-    border-color:#00d9ff;
-    box-shadow:0 20px 45px rgba(0,0,0,.35);
-}
-
-.icon{
-    font-size:52px;
-    margin-bottom:20px;
-}
-
-.card h3{
-    font-size:25px;
-    margin-bottom:15px;
-}
-
-.card p{
-    color:#9cadbd;
-    line-height:1.8;
-}
-
-/* SKILLS */
-
-.skill-box{
-    max-width:850px;
-    margin:auto;
-}
-
-.skill{
-    margin-bottom:25px;
-}
-
-.skill-top{
-    display:flex;
-    justify-content:space-between;
-    margin-bottom:9px;
-}
-
-.skill-top span:last-child{
-    color:#00d9ff;
-}
-
-.bar{
-    width:100%;
-    height:12px;
-    background:#15283b;
-    border-radius:20px;
-    overflow:hidden;
-}
-
-.bar div{
-    height:100%;
-    background:#00d9ff;
-    border-radius:20px;
-    animation:load 2s ease;
-}
-
-@keyframes load{
-    from{width:0}
-}
-
-/* PROJECTS */
-
-.project{
-    min-height:250px;
-}
-
-.project-number{
-    font-size:48px;
-    color:#00d9ff;
-    font-weight:bold;
-    margin-bottom:20px;
-}
-
-.project-tag{
-    display:inline-block;
-    padding:7px 13px;
-    border-radius:20px;
-    background:#12283a;
-    color:#00d9ff;
-    font-size:13px;
-    margin-top:15px;
-}
-
-/* GALLERY */
-
-.gallery{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:15px;
-}
-
-.gallery-item{
-    height:240px;
-    overflow:hidden;
-    border-radius:18px;
-}
-
-.gallery-item img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    transition:.5s;
-}
-
-.gallery-item:hover img{
-    transform:scale(1.12);
-}
-
-/* TIMELINE */
-
-.timeline{
-    max-width:850px;
-    margin:auto;
-}
-
-.timeline-item{
-    background:#0b1828;
-    padding:28px;
-    border-radius:20px;
-    margin-bottom:20px;
-    border-right:4px solid #00d9ff;
-    transition:.3s;
-}
-
-.timeline-item:hover{
-    transform:translateX(-8px);
-}
-
-.timeline-item h3{
-    margin-bottom:10px;
-}
-
-.timeline-item span{
-    color:#00d9ff;
-    font-size:14px;
-}
-
-.timeline-item p{
-    color:#9cadbd;
-    margin-top:12px;
-    line-height:1.7;
-}
-
-/* CONTACT */
-
-.contact{
-    max-width:750px;
-    margin:auto;
-}
-
-form{
-    background:#0b1828;
-    padding:35px;
-    border-radius:22px;
-    border:1px solid #182d43;
-}
-
-input,
-textarea{
-    width:100%;
-    padding:16px;
-    margin-bottom:17px;
-    background:#050b14;
-    color:white;
-    border:1px solid #20384f;
-    border-radius:12px;
-    outline:none;
-    font-size:16px;
-}
-
-input:focus,
-textarea:focus{
-    border-color:#00d9ff;
-}
-
-textarea{
-    height:160px;
-    resize:none;
-}
-
-button{
-    border:none;
-    cursor:pointer;
-}
-
-/* BACK TO TOP */
-
-.top{
-    position:fixed;
-    bottom:25px;
-    right:25px;
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    background:#00d9ff;
-    color:#001018;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-decoration:none;
-    font-size:22px;
-    z-index:500;
-    transition:.3s;
-}
-
-.top:hover{
-    transform:translateY(-6px);
-    box-shadow:0 0 25px rgba(0,217,255,.5);
-}
-
-/* FOOTER */
-
-footer{
-    background:#02060c;
-    padding:40px;
-    text-align:center;
-    color:#8294a6;
-}
-
-footer span{
-    color:#00d9ff;
-}
-
-/* MOBILE */
-
-@media(max-width:900px){
-
-    nav ul{
-        display:none;
-    }
-
-    .home h1{
-        font-size:55px;
-    }
-
-    .about{
-        grid-template-columns:1fr;
-    }
-
-    .cards{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .stats{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .gallery{
-        grid-template-columns:1fr 1fr;
-    }
-}
-
-@media(max-width:600px){
-
-    section{
-        padding:75px 5%;
-    }
-
-    .home{
-        padding:120px 5% 70px;
-    }
-
-    .home h1{
-        font-size:42px;
-    }
-
-    .home p{
-        font-size:17px;
-    }
-
-    .cards{
-        grid-template-columns:1fr;
-    }
-
-    .stats{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .gallery{
-        grid-template-columns:1fr;
-    }
-
-    .gallery-item{
-        height:270px;
-    }
-
-    .title h2{
-        font-size:35px;
-    }
-}
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
+:root{--bg:#0d0c0c;--card:#191616;--gold:#d6b474;--gold2:#f2d69f;--pink:#eab9b9;--cream:#f7f0ea;--text:#fff;--muted:#bdb4ae;--line:rgba(214,180,116,.28)}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:Cairo,sans-serif;background:var(--bg);color:var(--text);line-height:1.8}
+a{text-decoration:none;color:inherit}img{width:100%;display:block;object-fit:cover}
+.container{width:min(1180px,92%);margin:auto}
+.topbar{background:#080707;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted);padding:7px 0}
+.topbar .container{display:flex;justify-content:space-between}
+header{position:sticky;top:0;z-index:20;background:rgba(13,12,12,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+nav{height:76px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;color:var(--gold2)}
+.logo-mark{width:52px;height:52px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;font:700 35px Georgia;position:relative}
+.logo-mark:before{content:"♛";position:absolute;top:-18px;font-size:17px}
+.logo-text{font-size:22px;font-weight:800;line-height:1}.logo-text small{display:block;font:10px Georgia;letter-spacing:3px;color:var(--muted)}
+.links{display:flex;gap:26px;color:#ddd;font-weight:600}.links a:hover{color:var(--gold2)}
+.actions{display:flex;gap:8px}.icon{width:40px;height:40px;border:1px solid var(--line);background:none;color:white;border-radius:50%;cursor:pointer}.menu{display:none}
+.hero{min-height:640px;position:relative;display:flex;align-items:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,7,7,.94) 8%,rgba(8,7,7,.45),rgba(8,7,7,.85)),url("assets/preview.png") center/cover}
+.hero-content{position:relative;width:min(1180px,92%);margin:auto;padding:90px 0}
+.eyebrow{color:var(--gold2);letter-spacing:2px;font-size:13px}.hero h1{font-size:clamp(42px,6vw,76px);line-height:1.12;margin:10px 0}.hero h1 span{color:var(--pink)}
+.hero p{max-width:650px;color:#e7dfda;font-size:18px;margin:20px 0 28px}
+.btn{display:inline-flex;justify-content:center;align-items:center;gap:7px;border-radius:30px;padding:12px 24px;border:1px solid var(--gold);cursor:pointer;font-weight:800;transition:.25s}
+.primary{background:var(--pink);color:#241515;border-color:var(--pink)}.outline{margin-right:8px}.btn:hover{transform:translateY(-3px)}
+section{padding:80px 0}.cream{background:var(--cream);color:#251e1b}
+.head{text-align:center;margin-bottom:35px}.head .line{color:var(--gold);display:flex;justify-content:center;align-items:center;gap:12px;font-size:13px}.head .line:before,.head .line:after{content:"";height:1px;width:55px;background:var(--gold)}
+.head h2{font-size:36px;margin-top:2px}.head p{color:var(--muted);max-width:650px;margin:auto}.cream .head p{color:#756c66}
+.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.cat{height:300px;border-radius:18px;overflow:hidden;position:relative;cursor:pointer;box-shadow:0 15px 40px #0002}.cat img{height:100%;transition:.45s}.cat:hover img{transform:scale(1.07)}.cat:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 30%,#000d)}
+.cat-info{position:absolute;bottom:18px;right:18px;z-index:2;color:white}.cat-info h3{font-size:21px}.cat-info p{font-size:12px;color:#ddd}
+.products{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}.card{background:var(--card);border:1px solid var(--line);border-radius:17px;overflow:hidden;transition:.3s}.card:hover{transform:translateY(-6px);box-shadow:0 20px 45px #0008}
+.pic{height:350px;position:relative}.pic img{height:100%}.badge{position:absolute;top:12px;right:12px;background:var(--pink);color:#241414;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800}.heart{position:absolute;top:12px;left:12px;width:36px;height:36px;border-radius:50%;background:#0008;color:#fff;border:1px solid #fff8;cursor:pointer}
+.body{padding:16px}.body h3{font-size:17px}.stars{color:#edc35f;font-size:13px}.price{font-size:19px;font-weight:800;color:var(--gold2);margin:5px 0 11px}.price small{font-size:11px;color:var(--muted);font-weight:400}.body .btn{width:100%;padding:8px}
+.promo{display:grid;grid-template-columns:1fr 1fr;align-items:center;border:1px solid var(--line);border-radius:24px;overflow:hidden;background:linear-gradient(120deg,#211817,#0e0d0d)}.promo img{height:370px}.promo-content{padding:42px}.promo-content h2{font-size:36px}.promo-content p{color:var(--muted);margin:10px 0 22px}
+.prices{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.pricebox{text-align:center;padding:24px;border:1px solid var(--line);border-radius:16px;background:#151212}.pricebox h3{color:var(--gold2)}.pricebox strong{font-size:24px}
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:210px;gap:14px}.gallery div{border-radius:15px;overflow:hidden}.gallery img{height:100%;transition:.4s}.gallery img:hover{transform:scale(1.05)}.wide{grid-column:span 2}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:45px;align-items:center}.about-img{height:470px;border-radius:23px;overflow:hidden}.about-img img{height:100%}.about h2{font-size:39px}.about p{color:#665d58;margin:12px 0}
+.features{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.feature{padding:14px;border:1px solid #ded3cb;border-radius:12px}.feature b{display:block}.feature span{font-size:12px;color:#7a706a}
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.review{background:var(--card);border:1px solid var(--line);padding:24px;border-radius:17px}.review p{color:#ddd}.review b{display:block;color:var(--gold2);margin-top:12px}
+.contact{display:grid;grid-template-columns:.8fr 1.2fr;gap:20px}.box{background:#171414;border:1px solid var(--line);border-radius:20px;padding:28px}.item{display:flex;gap:12px;margin:18px 0}.item i{font-style:normal;font-size:21px;color:var(--gold)}
+form{display:grid;grid-template-columns:1fr 1fr;gap:13px}input,textarea{width:100%;background:#0e0d0d;color:white;border:1px solid var(--line);border-radius:10px;padding:12px;outline:none}textarea{height:120px;resize:vertical}.full{grid-column:1/-1}
+footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);text-align:center}
+.modal{position:fixed;inset:0;background:#000b;display:none;place-items:center;z-index:100;padding:20px}.modal.show{display:grid}.modal-box{width:min(600px,100%);background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;position:relative}.modal-box img{height:330px}.modal-body{padding:22px}.close{position:absolute;top:10px;left:10px;border:0;background:#0009;color:white;border-radius:50%;width:38px;height:38px;cursor:pointer}.toast{position:fixed;bottom:25px;left:25px;background:var(--pink);color:#241414;padding:11px 17px;border-radius:12px;font-weight:800;display:none;z-index:110}.toast.show{display:block}
+@media(max-width:900px){.links{display:none}.menu{display:block}.categories,.products{grid-template-columns:repeat(2,1fr)}.prices{grid-template-columns:repeat(2,1fr)}.promo,.about,.contact{grid-template-columns:1fr}.reviews{grid-template-columns:1fr}.gallery{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){section{padding:60px 0}.categories,.products,.prices{grid-template-columns:1fr}.hero{min-height:560px}.hero p{font-size:15px}.gallery{grid-auto-rows:170px}.wide{grid-column:span 2}.features,form{grid-template-columns:1fr}.full{grid-column:auto}.promo-content{padding:27px}.about h2,.promo-content h2{font-size:30px}}
 </style>
 </head>
-
 <body>
-
-<!-- NAVBAR -->
-
-<nav>
-
-<div class="logo">
-Adham <span>💻</span>
-</div>
-
-<ul>
-<li><a href="#home">Home</a></li>
-<li><a href="#about">About</a></li>
-<li><a href="#skills">Skills</a></li>
-<li><a href="#services">Services</a></li>
-<li><a href="#projects">Projects</a></li>
-<li><a href="#gallery">Gallery</a></li>
-<li><a href="#contact">Contact</a></li>
-</ul>
-
-</nav>
-
-
-<!-- HOME -->
-
-<section class="home" id="home">
-
-<div class="home-content">
-
-<div class="welcome">
-WELCOME TO MY WEBSITE 👋
-</div>
-
-<h1>
-I'm <span>Adham</span>
-<span class="laptop">💻</span>
-</h1>
-
-<p>
-I'm a young programmer who loves technology,
-web development and creating amazing digital projects.
-This is my personal space on the internet.
-</p>
-
-<div class="buttons">
-
-<a href="#projects" class="btn">
-Explore Projects 🚀
-</a>
-
-<a href="#contact" class="btn btn-outline">
-Contact Me 📩
-</a>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- ABOUT -->
-
-<section id="about">
-
-<div class="title">
-
-<h2>
-About <span>Adham</span>
-</h2>
-
-<p>
-A little bit about me
-</p>
-
-</div>
-
-<div class="about">
-
-<div class="about-image"></div>
-
-<div class="about-text">
-
-<h2>
-Hello, I'm <span>Adham</span> 👋
-</h2>
-
-<p>
-Welcome to my personal website.
-I'm interested in computers, programming,
-technology and web design.
-</p>
-
-<p>
-I'm learning how websites are built
-and I'm working on improving my skills
-by creating new projects.
-</p>
-
-<a href="#skills" class="btn">
-My Skills ⚡
-</a>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- STATS -->
-
-<section>
-
-<div class="title">
-
-<h2>
-My <span>Numbers</span> 📊
-</h2>
-
-</div>
-
-<div class="stats">
-
-<div class="stat">
-<h3>10+</h3>
-<p>Ideas</p>
-</div>
-
-<div class="stat">
-<h3>5+</h3>
-<p>Projects</p>
-</div>
-
-<div class="stat">
-<h3>3</h3>
-<p>Languages</p>
-</div>
-
-<div class="stat">
-<h3>100%</h3>
-<p>Passion</p>
-</div>
-
-</div>
-
-</section>
-
-
-<!-- SKILLS -->
-
-<section id="skills">
-
-<div class="title">
-
-<h2>
-My <span>Skills</span> ⚡
-</h2>
-
-<p>
-Skills I'm learning and improving
-</p>
-
-</div>
-
-<div class="skill-box">
-
-<div class="skill">
-
-<div class="skill-top">
-<span>HTML</span>
-<span>95%</span>
-</div>
-
-<div class="bar">
-<div style="width:95%"></div>
-</div>
-
-</div>
-
-
-<div class="skill">
-
-<div class="skill-top">
-<span>CSS</span>
-<span>90%</span>
-</div>
-
-<div class="bar">
-<div style="width:90%"></div>
-</div>
-
-</div>
-
-
-<div class="skill">
-
-<div class="skill-top">
-<span>JavaScript</span>
-<span>80%</span>
-</div>
-
-<div class="bar">
-<div style="width:80%"></div>
-</div>
-
-</div>
-
-
-<div class="skill">
-
-<div class="skill-top">
-<span>Web Design</span>
-<span>85%</span>
-</div>
-
-<div class="bar">
-<div style="width:85%"></div>
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- SERVICES -->
-
-<section id="services">
-
-<div class="title">
-
-<h2>
-My <span>Services</span> 🛠️
-</h2>
-
-<p>
-Things I can build and learn
-</p>
-
-</div>
-
-<div class="cards">
-
-<div class="card">
-
-<div class="icon">🌐</div>
-
-<h3>
-Web Development
-</h3>
-
-<p>
-Building responsive websites
-for computers and mobile phones.
-</p>
-
-</div>
-
-
-<div class="card">
-
-<div class="icon">🎨</div>
-
-<h3>
-Web Design
-</h3>
-
-<p>
-Creating modern interfaces
-with beautiful layouts and effects.
-</p>
-
-</div>
-
-
-<div class="card">
-
-<div class="icon">⚡</div>
-
-<h3>
-JavaScript
-</h3>
-
-<p>
-Adding interactive features
-and useful functions to websites.
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- PROJECTS -->
-
-<section id="projects">
-
-<div class="title">
-
-<h2>
-My <span>Projects</span> 🚀
-</h2>
-
-<p>
-My current and future projects
-</p>
-
-</div>
-
-<div class="cards">
-
-<div class="card project">
-
-<div class="project-number">01</div>
-
-<h3>
-Personal Website
-</h3>
-
-<p>
-A modern personal website
-created for Adham.
-</p>
-
-<div class="project-tag">
-HTML + CSS
-</div>
-
-</div>
-
-
-<div class="card project">
-
-<div class="project-number">02</div>
-
-<h3>
-Online Store
-</h3>
-
-<p>
-A future online store
-with products and categories.
-</p>
-
-<div class="project-tag">
-Coming Soon
-</div>
-
-</div>
-
-
-<div class="card project">
-
-<div class="project-number">03</div>
-
-<h3>
-Technology Blog
-</h3>
-
-<p>
-A future website for sharing
-technology and programming content.
-</p>
-
-<div class="project-tag">
-Future Project
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- GALLERY -->
-
-<section id="gallery">
-
-<div class="title">
-
-<h2>
-Photo <span>Gallery</span> 📸
-</h2>
-
-<p>
-Technology and programming
-</p>
-
-</div>
-
+<div class="topbar"><div class="container"><span>✨ خصم خاص للعروس عند الحجز المبكر</span><span>توصيل لجميع المحافظات</span></div></div>
+
+<header><div class="container"><nav>
+<a class="logo" href="#home"><div class="logo-mark">Z</div><div class="logo-text">زبن<small>Z ZBAN</small></div></a>
+<div class="links"><a href="#home">الرئيسية</a><a href="#categories">الفئات</a><a href="#designs">الفساتين</a><a href="#prices">الأسعار</a><a href="#about">من نحن</a><a href="#contact">تواصل معنا</a></div>
+<div class="actions"><button class="icon" onclick="showToast('تمت الإضافة للمفضلة ♡')">♡</button><button class="icon menu" onclick="showToast('استخدمي روابط القائمة من أعلى الصفحة')">☰</button></div>
+</nav></div></header>
+
+<main>
+<section id="home" class="hero"><div class="hero-bg"></div><div class="hero-content">
+<div class="eyebrow">Z ZBAN • BRIDAL COLLECTION</div>
+<h1>فساتين الزفاف<br><span>لأنكِ تستحقين أن تكوني الأجمل</span></h1>
+<p>مجموعة مميزة من أجمل فساتين الأفراح والخطوبة بتصاميم عصرية وكلاسيكية، مع تفاصيل راقية ليكون يومك أكثر روعة وجمالاً.</p>
+<a class="btn primary" href="#designs">تسوقي الآن ←</a><a class="btn outline" href="#contact">احجزي موعدك</a>
+</div></section>
+
+<section id="categories" class="cream"><div class="container"><div class="head"><div class="line">اختاري إطلالتك</div><h2>فئات الفساتين</h2><p>تشكيلة متنوعة تناسب كل مناسبة وكل ذوق.</p></div>
+<div class="categories">
+<div class="cat" onclick="filterProducts('زفاف')"><img src="https://images.unsplash.com/photo-1519657337289-077653f724ed?auto=format&fit=crop&w=900&q=85"><div class="cat-info"><h3>فساتين زفاف</h3><p>أميرة • كلاسيك • ملكي</p></div></div>
+<div class="cat" onclick="filterProducts('خطوبة')"><img src="https://images.unsplash.com/photo-1594552072238-b8a33785b261?auto=format&fit=crop&w=900&q=85"><div class="cat-info"><h3>فساتين خطوبة</h3><p>ناعمة • عصرية • راقية</p></div></div>
+<div class="cat" onclick="filterProducts('سهرة')"><img src="https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=900&q=85"><div class="cat-info"><h3>فساتين سهرة</h3><p>إطلالة مميزة لكل مناسبة</p></div></div>
+<div class="cat" onclick="filterProducts('أميرة')"><img src="https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&w=900&q=85"><div class="cat-info"><h3>تصاميم أميرة</h3><p>تفاصيل فخمة ولمسات ناعمة</p></div></div>
+</div></div></section>
+
+<section id="designs"><div class="container"><div class="head"><div class="line">NEW COLLECTION</div><h2>أحدث التصاميم</h2><p>اضغطي على التفاصيل لمشاهدة الفستان والسعر.</p></div><div id="productGrid" class="products"></div></div></section>
+
+<section><div class="container promo"><img src="https://images.unsplash.com/photo-1519741497674-611481001e2a?auto=format&fit=crop&w=1000&q=85"><div class="promo-content"><div class="eyebrow">SPECIAL OFFER</div><h2>إطلالتكِ تستحق لمسة استثنائية</h2><p>احجزي موعدك لمشاهدة مجموعة مختارة وتجربة الفساتين بمساعدة فريق متخصص.</p><a href="#contact" class="btn primary">اكتشفي العروض</a></div></div></section>
+
+<section id="prices"><div class="container"><div class="head"><div class="line">Z ZBAN PRICES</div><h2>أسعار الفساتين</h2><p>أسعار استرشادية قابلة للتغيير حسب الخامة والتفاصيل والتعديلات.</p></div>
+<div class="prices">
+<div class="pricebox"><h3>فساتين خطوبة</h3><strong>من 6,000 ج.م</strong><p>حتى 15,000 ج.م</p></div>
+<div class="pricebox"><h3>فساتين سهرة</h3><strong>من 6,500 ج.م</strong><p>حتى 16,000 ج.م</p></div>
+<div class="pricebox"><h3>فساتين زفاف</h3><strong>من 10,000 ج.م</strong><p>حتى 20,000 ج.م</p></div>
+<div class="pricebox"><h3>فساتين ملكية</h3><strong>من 15,000 ج.م</strong><p>حتى 28,000 ج.م</p></div>
+</div></div></section>
+
+<section class="cream"><div class="container"><div class="head"><div class="line">PHOTO GALLERY</div><h2>معرض الصور</h2><p>مجموعة من الإطلالات والأفكار لتختاري منها.</p></div>
 <div class="gallery">
-
-<div class="gallery-item">
-<img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80">
-</div>
-
-<div class="gallery-item">
-<img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=900&q=80">
-</div>
-
-<div class="gallery-item">
-<img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=900&q=80">
-</div>
-
-<div class="gallery-item">
-<img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=80">
-</div>
-
-<div class="gallery-item">
-<img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=900&q=80">
-</div>
-
-<div class="gallery-item">
-<img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80">
-</div>
-
-<div class="gallery-item">
-<img src="https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?auto=format&fit=crop&w=900&q=80">
-</div>
-
-<div class="gallery-item">
-<img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=900&q=80">
-</div>
-
-</div>
-
-</section>
-
-
-<!-- TIMELINE -->
-
-<section>
-
-<div class="title">
-
-<h2>
-My <span>Journey</span> 🛣️
-</h2>
-
-</div>
-
-<div class="timeline">
-
-<div class="timeline-item">
-
-<span>STEP 01</span>
-
-<h3>
-Start Learning
-</h3>
-
-<p>
-Learning the basics of computers
-and how websites work.
-</p>
-
-</div>
-
-
-<div class="timeline-item">
-
-<span>STEP 02</span>
-
-<h3>
-HTML & CSS
-</h3>
-
-<p>
-Learning how to create website
-structures and beautiful designs.
-</p>
-
-</div>
-
-
-<div class="timeline-item">
-
-<span>STEP 03</span>
-
-<h3>
-JavaScript
-</h3>
-
-<p>
-Learning how to make websites
-interactive and dynamic.
-</p>
-
-</div>
-
-
-<div class="timeline-item">
-
-<span>STEP 04</span>
-
-<h3>
-Build Bigger Projects
-</h3>
-
-<p>
-Creating bigger and more advanced
-projects in the future.
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- CONTACT -->
-
-<section id="contact">
-
-<div class="title">
-
-<h2>
-Contact <span>Adham</span> 📩
-</h2>
-
-<p>
-Send me a message
-</p>
-
-</div>
-
-<div class="contact">
-
-<form id="contactForm">
-
-<input
-type="text"
-id="name"
-placeholder="Your Name"
-required
->
-
-<input
-type="email"
-placeholder="Your Email"
-required
->
-
-<textarea
-placeholder="Write your message..."
-required
-></textarea>
-
-<button
-type="submit"
-class="btn"
->
-Send Message 🚀
-</button>
-
-</form>
-
-</div>
-
-</section>
-
-
-<!-- TOP BUTTON -->
-
-<a href="#home" class="top">
-↑
-</a>
-
-
-<!-- FOOTER -->
-
-<footer>
-
-<p>
-© 2026
-<span>Adham 💻</span>
-— All Rights Reserved
-</p>
-
-</footer>
-
+<div class="wide"><img src="https://images.unsplash.com/photo-1519657337289-077653f724ed?auto=format&fit=crop&w=1000&q=85"></div>
+<div><img src="https://images.unsplash.com/photo-1594552072238-b8a33785b261?auto=format&fit=crop&w=800&q=85"></div>
+<div><img src="https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&w=800&q=85"></div>
+<div><img src="https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=800&q=85"></div>
+<div><img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=800&q=85"></div>
+<div><img src="https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=800&q=85"></div>
+<div class="wide"><img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1000&q=85"></div>
+</div></div></section>
+
+<section id="about"><div class="container about"><div class="about-img"><img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1000&q=85"></div>
+<div><div class="eyebrow">ABOUT Z ZBAN</div><h2>لماذا تختارين زبن Z؟</h2><p>نحن نؤمن أن فستان الزفاف ليس مجرد قطعة قماش، بل هو جزء من أجمل ذكرياتك. لذلك نهتم بالتفاصيل والخامة والمقاس حتى تشعري بالراحة والثقة في يومك.</p>
+<div class="features"><div class="feature"><b>♕ تصاميم فريدة</b><span>اختيارات تناسب الإطلالة التي تحلمين بها.</span></div><div class="feature"><b>◇ جودة عالية</b><span>خامات وتفاصيل مختارة بعناية.</span></div><div class="feature"><b>♡ تجربة مريحة</b><span>مساعدة في اختيار التصميم والمقاس.</span></div><div class="feature"><b>★ فريق متخصص</b><span>استشارة قبل الحجز والتجربة.</span></div></div></div></div></section>
+
+<section><div class="container"><div class="head"><div class="line">OUR CLIENTS</div><h2>آراء عميلاتنا</h2><p>آراء تجريبية داخل المشروع ويمكن تعديلها كما تريدين.</p></div>
+<div class="reviews"><div class="review"><div class="stars">★★★★★</div><p>الفستان كان أجمل مما توقعت، والخدمة ممتازة جداً والتفاصيل جميلة.</p><b>— مريم أحمد</b></div><div class="review"><div class="stars">★★★★★</div><p>تجربة مريحة جداً وفريق متعاون وساعدني في اختيار التصميم المناسب.</p><b>— نور علي</b></div><div class="review"><div class="stars">★★★★★</div><p>المجموعة متنوعة والأسعار واضحة، والتعامل كان راقياً من أول زيارة.</p><b>— سارة محمد</b></div></div></div></section>
+
+<section id="contact"><div class="container"><div class="head"><div class="line">CONTACT US</div><h2>تواصلي معنا</h2><p>اتركي بياناتك وسنتواصل معك لتحديد موعد التجربة.</p></div>
+<div class="contact"><div class="box"><h3>بيانات Z زبن</h3><div class="item"><i>☎</i><span>01012345678</span></div><div class="item"><i>✉</i><span>info@zzban.com</span></div><div class="item"><i>⌖</i><span>دمياط - مصر</span></div><div class="item"><i>⏰</i><span>السبت - الخميس: 10 ص إلى 10 م</span></div></div>
+<div class="box"><form onsubmit="event.preventDefault();showToast('تم إرسال طلبك بنجاح ✨')"><input placeholder="الاسم"><input placeholder="رقم الهاتف"><input class="full" type="email" placeholder="البريد الإلكتروني"><textarea class="full" placeholder="اكتبي موعدك أو التصميم الذي تبحثين عنه"></textarea><button class="btn primary full">إرسال الطلب</button></form></div></div></div></section>
+</main>
+
+<footer><div class="container"><div class="logo" style="justify-content:center;margin-bottom:10px"><div class="logo-mark">Z</div><div class="logo-text">زبن<small>Z ZBAN</small></div></div><p>© 2026 Z زبن — فساتين أفراح وزفاف • كل الحقوق محفوظة</p></div></footer>
+
+<div id="modal" class="modal" onclick="if(event.target===this)closeModal()"><div class="modal-box"><button class="close" onclick="closeModal()">×</button><img id="modalImg"><div class="modal-body"><h2 id="modalTitle"></h2><div class="stars">★★★★★</div><p id="modalDesc" style="color:#ccc;margin:8px 0"></p><div id="modalPrice" class="price"></div><button class="btn primary" onclick="closeModal();document.querySelector('#contact').scrollIntoView()">احجزي موعد للتجربة</button></div></div></div>
+<div id="toast" class="toast"></div>
 
 <script>
-
-const form =
-document.getElementById("contactForm");
-
-form.addEventListener("submit", function(event){
-
-event.preventDefault();
-
-const name =
-document.getElementById("name").value;
-
-alert(
-"Hello " +
-name +
-" 👋\n\nYour message was sent successfully!"
-);
-
-form.reset();
-
-});
-
+const products=[
+{title:"فستان ملكة",type:"زفاف",price:"18,000 ج.م",img:"https://images.unsplash.com/photo-1519657337289-077653f724ed?auto=format&fit=crop&w=900&q=85",desc:"تصميم فاخر بلمسة ملكية وتفاصيل راقية."},
+{title:"فستان سحر",type:"زفاف",price:"15,000 ج.م",img:"https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=900&q=85",desc:"قصة ناعمة مناسبة للعروس التي تحب البساطة والفخامة."},
+{title:"فستان وردي",type:"خطوبة",price:"10,000 ج.م",img:"https://images.unsplash.com/photo-1594552072238-b8a33785b261?auto=format&fit=crop&w=900&q=85",desc:"لون وردي أنيق وتفاصيل عصرية للمناسبات الخاصة."},
+{title:"فستان كلاسيك",type:"زفاف",price:"15,000 ج.م",img:"https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&w=900&q=85",desc:"ستايل كلاسيكي راقٍ بتفاصيل هادئة."},
+{title:"فستان لؤلؤ",type:"أميرة",price:"20,000 ج.م",img:"https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=900&q=85",desc:"تفاصيل مستوحاة من الأميرات مع لمسات لامعة."},
+{title:"فستان روز",type:"سهرة",price:"8,500 ج.م",img:"https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=900&q=85",desc:"اختيار مميز للسهرات والحفلات."},
+{title:"فستان أبيض ناعم",type:"زفاف",price:"12,500 ج.م",img:"https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=900&q=85",desc:"تصميم رقيق وخفيف لإطلالة أنثوية."},
+{title:"فستان مخملي",type:"سهرة",price:"9,500 ج.م",img:"https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=85",desc:"إطلالة فخمة للمناسبات المسائية."}
+];
+function render(list=products){
+ document.getElementById("productGrid").innerHTML=list.map((p,i)=>`
+ <article class="card"><div class="pic"><img src="${p.img}" alt="${p.title}"><span class="badge">${p.type}</span><button class="heart" onclick="showToast('تمت الإضافة للمفضلة ♡')">♡</button></div>
+ <div class="body"><h3>${p.title}</h3><div class="stars">★★★★★</div><div class="price">${p.price} <small>شامل العرض</small></div><button class="btn primary" onclick="openModal(${products.indexOf(p)})">تفاصيل أكثر</button></div></article>`).join("");
+}
+function openModal(i){const p=products[i];modalImg.src=p.img;modalTitle.textContent=p.title;modalDesc.textContent=p.desc;modalPrice.textContent=p.price;modal.classList.add("show")}
+function closeModal(){modal.classList.remove("show")}
+function filterProducts(type){document.querySelector("#designs").scrollIntoView();render(products.filter(p=>p.type===type))}
+function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2500)}
+render();
 </script>
-
 </body>
 </html>
+'''
+(project/"index.html").write_text(html, encoding="utf-8")
+
+zip_path = Path("/mnt/data/Z_ZBAN_فساتين_الافراح_كامل.zip")
+with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
+    for p in project.rglob("*"):
+        if p.is_file():
+            z.write(p, p.relative_to(project.parent))
+
+print(f"تم إنشاء المشروع: {project/'index.html'}")
+print(f"تم إنشاء الملف المضغوط: {zip_path}")
